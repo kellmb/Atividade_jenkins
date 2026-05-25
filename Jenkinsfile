@@ -89,10 +89,11 @@ pipeline {
             junit allowEmptyResults: true, testResults: 'reports\\junit.xml'
             script {
                 if (fileExists('reports/coverage.xml')) {
-                    publishCoverage adapters: [coberturaAdapter('reports/coverage.xml')],
-                                   sourceFileResolver: sourceFiles('NEVER_STORE')
+                    recordCoverage(
+                        tools: [[parser: 'COBERTURA', pattern: 'reports/coverage.xml']]
+                    )
                 }
-            }
+            }   
         }
         success  { echo ' Pipeline finalizado com sucesso!' }
         unstable { echo ' Pipeline INSTÁVEL — testes falharam!' }
